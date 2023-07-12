@@ -1,32 +1,32 @@
 package br.com.wti.junit;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Washington Antunes for wTI on 12/07/2023
  */
 public class EntendendoJUnitTest {
 
-  @BeforeClass
+  @BeforeAll
   public static void iniciarTestes() {
     System.out.println(">>> public void iniciarTestes() <<<");
   }
 
-  @AfterClass
+  @AfterAll
   public static void encerrarTestes() {
     System.out.println(">>> public void encerrarTestes() <<<");
   }
 
-  @Before
+  @BeforeEach
   public void iniciarTeste() {
     System.out.println(">>> public void iniciarTeste() <<<");
   }
 
-  @After
+  @AfterEach
   public void encerrarTeste() {
     System.out.println(">>> public void encerrarTeste() <<<");
   }
