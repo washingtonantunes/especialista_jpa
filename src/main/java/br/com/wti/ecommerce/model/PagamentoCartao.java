@@ -7,6 +7,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -28,8 +30,9 @@ public class PagamentoCartao {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @Column(name = "pedido_id")
-  private Integer pedidoId;
+  @OneToOne(optional = false)
+  @JoinColumn(name = "pedido_id")
+  private Pedido pedido;
 
   @Enumerated(EnumType.STRING)
   private StatusPagamento status;
