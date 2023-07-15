@@ -1,4 +1,4 @@
-package br.com.wti.junit.ecommerce;
+package br.com.wti.junit.ecommerce.iniciandocomjpa;
 
 import br.com.wti.ecommerce.model.Produto;
 import br.com.wti.junit.EntityManagerTest;
