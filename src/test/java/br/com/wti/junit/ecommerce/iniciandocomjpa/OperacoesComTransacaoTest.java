@@ -43,7 +43,7 @@ public class OperacoesComTransacaoTest extends EntityManagerTest {
 
     entityManager.clear();
 
-    Produto produtoVerificacao = entityManager.find(Produto.class, produtoSalvo .getId());
+    Produto produtoVerificacao = entityManager.find(Produto.class, produtoSalvo.getId());
     Assertions.assertNotNull(produtoVerificacao);
   }
 

@@ -1,14 +1,15 @@
 package br.com.wti.ecommerce.model;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
+
 import java.math.BigDecimal;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,21 +25,21 @@ import lombok.Setter;
 @Table(name = "item_pedido")
 public class ItemPedido {
 
-  @EqualsAndHashCode.Include
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+    @EmbeddedId
+    private ItemPedidoId id;
 
-  @ManyToOne(optional = false)
-  @JoinColumn(name = "pedido_id")
-  private Pedido pedido;
+    @MapsId("pedidoId")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "pedido_id")
+    private Pedido pedido;
 
-  @ManyToOne(optional = false)
-  @JoinColumn(name = "produto_id")
-  private Produto produto;
+    @MapsId("produtoId")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "produto_id")
+    private Produto produto;
 
-  @Column(name = "preco_produto")
-  private BigDecimal precoProduto;
+    @Column(name = "preco_produto")
+    private BigDecimal precoProduto;
 
-  private Integer quantidade;
+    private Integer quantidade;
 }

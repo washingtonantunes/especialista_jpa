@@ -1,20 +1,10 @@
 package br.com.wti.ecommerce.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import java.math.BigDecimal;
-import java.util.List;
-import lombok.EqualsAndHashCode;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 /**
  * @author Washington Antunes for wTI on 12/07/2023
@@ -22,25 +12,19 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "categoria")
-public class Categoria {
+public class Categoria extends EntidadeBaseInteger {
 
-  @EqualsAndHashCode.Include
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+    private String nome;
 
-  private String nome;
+    @ManyToOne
+    @JoinColumn(name = "categoria_pai_id")
+    private Categoria categoriaPai;
 
-  @ManyToOne
-  @JoinColumn(name = "categoria_pai_id")
-  private Categoria categoriaPai;
+    @OneToMany(mappedBy = "categoriaPai")
+    private List<Categoria> categorias;
 
-  @OneToMany(mappedBy = "categoriaPai")
-  private List<Categoria> categorias;
-
-  @ManyToMany(mappedBy = "categorias")
-  private List<Produto> produtos;
+    @ManyToMany(mappedBy = "categorias")
+    private List<Produto> produtos;
 }

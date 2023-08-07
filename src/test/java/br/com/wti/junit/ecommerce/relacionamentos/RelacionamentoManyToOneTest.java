@@ -2,12 +2,15 @@ package br.com.wti.junit.ecommerce.relacionamentos;
 
 import br.com.wti.ecommerce.model.Cliente;
 import br.com.wti.ecommerce.model.ItemPedido;
+import br.com.wti.ecommerce.model.ItemPedidoId;
 import br.com.wti.ecommerce.model.Pedido;
 import br.com.wti.ecommerce.model.Produto;
 import br.com.wti.ecommerce.model.StatusPedido;
 import br.com.wti.junit.EntityManagerTest;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -16,53 +19,56 @@ import org.junit.jupiter.api.Test;
  */
 public class RelacionamentoManyToOneTest extends EntityManagerTest {
 
-  @Test
-  public void verificarRelacionamento() {
-    Cliente cliente = entityManager.find(Cliente.class, 1);
+    @Test
+    public void verificarRelacionamento() {
+        Cliente cliente = entityManager.find(Cliente.class, 1);
 
-    Pedido pedido = new Pedido();
-    pedido.setStatus(StatusPedido.AGUARDANDO);
-    pedido.setDataPedido(LocalDateTime.now());
-    pedido.setTotal(BigDecimal.TEN);
+        Pedido pedido = new Pedido();
+        pedido.setStatus(StatusPedido.AGUARDANDO);
+        pedido.setDataCriacao(LocalDateTime.now());
+        pedido.setTotal(BigDecimal.TEN);
 
-    pedido.setCliente(cliente);
+        pedido.setCliente(cliente);
 
-    entityManager.getTransaction().begin();
-    entityManager.persist(pedido);
-    entityManager.getTransaction().commit();
+        entityManager.getTransaction().begin();
+        entityManager.persist(pedido);
+        entityManager.getTransaction().commit();
 
-    entityManager.clear();
+        entityManager.clear();
 
-    Pedido pedidoVerificacao = entityManager.find(Pedido.class, pedido.getId());
-    Assertions.assertNotNull(pedidoVerificacao.getCliente());
-  }
+        Pedido pedidoVerificacao = entityManager.find(Pedido.class, pedido.getId());
+        Assertions.assertNotNull(pedidoVerificacao.getCliente());
+    }
 
-  @Test
-  public void verificarRelacionamentoItemPedido() {
-    Cliente cliente = entityManager.find(Cliente.class, 1);
-    Produto produto = entityManager.find(Produto.class, 1);
+    @Test
+    public void verificarRelacionamentoItemPedido() {
+        Cliente cliente = entityManager.find(Cliente.class, 1);
+        Produto produto = entityManager.find(Produto.class, 1);
 
-    Pedido pedido = new Pedido();
-    pedido.setStatus(StatusPedido.AGUARDANDO);
-    pedido.setDataPedido(LocalDateTime.now());
-    pedido.setTotal(BigDecimal.TEN);
-    pedido.setCliente(cliente);
+        Pedido pedido = new Pedido();
+        pedido.setStatus(StatusPedido.AGUARDANDO);
+        pedido.setDataCriacao(LocalDateTime.now());
+        pedido.setTotal(BigDecimal.TEN);
+        pedido.setCliente(cliente);
 
-    ItemPedido itemPedido = new ItemPedido();
-    itemPedido.setPrecoProduto(produto.getPreco());
-    itemPedido.setQuantidade(1);
-    itemPedido.setPedido(pedido);
-    itemPedido.setProduto(produto);
+        ItemPedido itemPedido = new ItemPedido();
+//    itemPedido.setPedidoId(pedido.getId()); IdClass
+//    itemPedido.setProdutoId(produto.getId()); IdClass
+        itemPedido.setId(new ItemPedidoId());
+        itemPedido.setPrecoProduto(produto.getPreco());
+        itemPedido.setQuantidade(1);
+        itemPedido.setPedido(pedido);
+        itemPedido.setProduto(produto);
 
-    entityManager.getTransaction().begin();
-    entityManager.persist(pedido);
-    entityManager.persist(itemPedido);
-    entityManager.getTransaction().commit();
+        entityManager.getTransaction().begin();
+        entityManager.persist(pedido);
+        entityManager.persist(itemPedido);
+        entityManager.getTransaction().commit();
 
-    entityManager.clear();
+        entityManager.clear();
 
-    ItemPedido itemPedidoVerificacao = entityManager.find(ItemPedido.class, itemPedido.getId());
-    Assertions.assertNotNull(itemPedidoVerificacao.getPedido());
-    Assertions.assertNotNull(itemPedidoVerificacao.getProduto());
-  }
+        ItemPedido itemPedidoVerificacao = entityManager.find(ItemPedido.class, new ItemPedidoId(pedido.getId(), produto.getId()));
+        Assertions.assertNotNull(itemPedidoVerificacao.getPedido());
+        Assertions.assertNotNull(itemPedidoVerificacao.getProduto());
+    }
 }

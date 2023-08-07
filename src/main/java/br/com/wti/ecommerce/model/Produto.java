@@ -1,20 +1,12 @@
 package br.com.wti.ecommerce.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import java.math.BigDecimal;
-import java.util.List;
-import lombok.EqualsAndHashCode;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.boot.model.source.spi.EmbeddableSource;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author Washington Antunes for wTI on 12/07/2023
@@ -22,25 +14,42 @@ import org.hibernate.boot.model.source.spi.EmbeddableSource;
 
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "produto")
-public class Produto {
+public class Produto extends EntidadeBaseInteger {
 
-  @EqualsAndHashCode.Include
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
-  private String nome;
-  private String descricao;
-  private BigDecimal preco;
+    @Column(name = "data_criacao", updatable = false)
+    private LocalDateTime dataCriacao;
 
-  @ManyToMany
-  @JoinTable(name = "produto_categoria",
-          joinColumns = @JoinColumn(name = "produto_id"),
-          inverseJoinColumns = @JoinColumn(name = "categoria_id"))
-  private List<Categoria> categorias;
+    @Column(name = "data_ultima_atualizacao", insertable = false)
+    private LocalDateTime dataUltimaAtualizacao;
 
-  @OneToOne(mappedBy = "produto")
-  private Estoque estoque;
+    private String nome;
+
+    private String descricao;
+
+    private BigDecimal preco;
+
+    @Lob
+    @Column(length = 1000)
+    private byte[] foto;
+
+    @ManyToMany
+    @JoinTable(name = "produto_categoria",
+            joinColumns = @JoinColumn(name = "produto_id"),
+            inverseJoinColumns = @JoinColumn(name = "categoria_id"))
+    private List<Categoria> categorias;
+
+    @OneToOne(mappedBy = "produto")
+    private Estoque estoque;
+
+    @ElementCollection
+    @CollectionTable(name = "produto_tag",
+            joinColumns = @JoinColumn(name = "produto_id"))
+    @Column(name = "tag")
+    private List<String> tags;
+
+    @ElementCollection
+    @CollectionTable(name = "produto_atributo", joinColumns = @JoinColumn(name = "produto_id"))
+    private List<Atributo> atributos;
 }

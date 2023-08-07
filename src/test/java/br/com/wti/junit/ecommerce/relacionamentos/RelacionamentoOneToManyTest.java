@@ -2,6 +2,7 @@ package br.com.wti.junit.ecommerce.relacionamentos;
 
 import br.com.wti.ecommerce.model.Cliente;
 import br.com.wti.ecommerce.model.ItemPedido;
+import br.com.wti.ecommerce.model.ItemPedidoId;
 import br.com.wti.ecommerce.model.Pedido;
 import br.com.wti.ecommerce.model.Produto;
 import br.com.wti.ecommerce.model.StatusPedido;
@@ -22,7 +23,7 @@ public class RelacionamentoOneToManyTest extends EntityManagerTest {
 
     Pedido pedido = new Pedido();
     pedido.setStatus(StatusPedido.AGUARDANDO);
-    pedido.setDataPedido(LocalDateTime.now());
+    pedido.setDataCriacao(LocalDateTime.now());
     pedido.setTotal(BigDecimal.TEN);
 
     pedido.setCliente(cliente);
@@ -44,11 +45,14 @@ public class RelacionamentoOneToManyTest extends EntityManagerTest {
 
     Pedido pedido = new Pedido();
     pedido.setStatus(StatusPedido.AGUARDANDO);
-    pedido.setDataPedido(LocalDateTime.now());
+    pedido.setDataCriacao(LocalDateTime.now());
     pedido.setTotal(BigDecimal.TEN);
     pedido.setCliente(cliente);
 
     ItemPedido itemPedido = new ItemPedido();
+//    itemPedido.setPedidoId(pedido.getId()); IdClass
+//    itemPedido.setProdutoId(produto.getId()); IdClass
+    itemPedido.setId(new ItemPedidoId());
     itemPedido.setPrecoProduto(produto.getPreco());
     itemPedido.setQuantidade(1);
     itemPedido.setPedido(pedido);
